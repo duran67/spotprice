@@ -25,6 +25,35 @@ npm run build
 The generated `dist/` directory can also be published to any static web host.
 No credentials or backend are needed. The browser needs access to the price API.
 
+## Deploy to Cloudflare
+
+### Workers (Git integration)
+
+The included `wrangler.json` configures a static-assets-only Worker and uploads
+only `dist/`, not the repository or `node_modules/`.
+
+In your Worker's build settings, use:
+
+- Root directory: the repository root.
+- Build command: `npm run build`.
+- Deploy command: `npx wrangler deploy` (remove any `--assets .` override).
+- Build environment variable: `NODE_VERSION=24`.
+
+If Cloudflare reports that the Worker name does not match, change `name` in
+`wrangler.json` to the name of your existing Cloudflare Worker. This deployment
+identifier does not change the visible `spotpris` branding.
+
+Push these files to the connected GitHub branch and redeploy. Do not use the
+repository root as the assets directory: it includes development dependencies
+that are not part of the website and may exceed Cloudflare's asset size limit.
+
+### Pages (alternative)
+
+For a Cloudflare Pages project, choose no framework preset, set the build command
+to `npm run build`, the build output directory to `dist`, and the build
+environment variable `NODE_VERSION=24`. Pages does not need a Wrangler deploy
+command.
+
 ## Features and data
 
 - SE1–SE4, today and tomorrow, and a persistent area/VAT preference.
