@@ -1,0 +1,20 @@
+{
+  "name": "spotprice",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "npm run build && node tools/server.ts",
+    "start": "node tools/server.ts",
+    "build": "tsc -p tsconfig.build.json && node tools/build.ts",
+    "check": "tsc --noEmit",
+    "test": "node --test tests/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "~5.9.3"
+  }
+}

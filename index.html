@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f3">
+    <meta name="description" content="Se Sveriges spotpriser på el och hitta den billigaste tiden att använda el. Priser för SE1, SE2, SE3 och SE4.">
+    <title>spotpris — lite koll på elpriset</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%2326513c'/%3E%3Cpath d='M23 6 11 23h9l-3 11 13-18h-9z' fill='%23d5ef9b'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="spotpris, startsida"><span class="brand-icon" aria-hidden="true">ϟ</span>spotpris<span class="brand-dot">.</span></a>
+      <span class="header-caption">Din elkoll. Kvart för kvart.</span>
+      <a class="about-link" href="#om-priset">Om elpriset <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div><p class="eyebrow"><span class="tiny-spark" aria-hidden="true">✳</span> SMARTARE ELVARDAG</p><h1 id="page-title">Lite koll.<br><span>Lägre elkostnad.</span></h1><p class="intro-description">Följ elpriset och hitta rätt tid för vardagens energi.</p></div>
+        <div class="area-control"><label for="area">DITT ELOMRÅDE</label><select id="area"><option value="SE1">SE1 · Luleå</option><option value="SE2">SE2 · Sundsvall</option><option value="SE3" selected>SE3 · Stockholm</option><option value="SE4">SE4 · Malmö</option></select><span>Välj området där du använder el.</span></div>
+      </section>
+
+      <section class="dashboard" aria-label="Elprisöversikt">
+        <div class="dashboard-toolbar">
+          <div class="day-tabs" role="group" aria-label="Välj dag"><button id="today" class="active" aria-pressed="true">Idag</button><button id="tomorrow" aria-pressed="false">Imorgon</button></div>
+          <p id="date-label" class="date-label"></p>
+          <label class="vat-control"><input id="vat" type="checkbox" checked><span class="switch" aria-hidden="true"></span>Inkl. moms <span class="vat-percent">(25 %)</span></label>
+        </div>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+        <div id="data-content" hidden>
+          <div class="stats">
+            <article class="stat current-stat"><p id="primary-label">PRISET JUST NU <span class="live-dot" aria-hidden="true"></span></p><div><strong id="primary-price">—</strong><span class="unit">öre/kWh</span></div><span id="primary-note" class="stat-note"></span></article>
+            <article class="stat"><p>DAGENS LÄGSTA <span class="stat-arrow" aria-hidden="true">↘</span></p><div><strong id="min-price">—</strong><span class="unit">öre/kWh</span></div><span id="min-note" class="stat-note"></span></article>
+            <article class="stat"><p>DAGENS HÖGSTA <span class="stat-arrow high" aria-hidden="true">↗</span></p><div><strong id="max-price">—</strong><span class="unit">öre/kWh</span></div><span id="max-note" class="stat-note"></span></article>
+            <article class="stat"><p>DAGENS SNITT <span class="stat-arrow" aria-hidden="true">≈</span></p><div><strong id="avg-price">—</strong><span class="unit">öre/kWh</span></div><span class="stat-note">Tidsvägt snitt för hela dygnet</span></article>
+          </div>
+
+          <article class="chart-card">
+            <div class="card-heading"><div><h2>Elpriset under dagen</h2><p id="chart-description">Spotpris per kvart</p></div><div class="chart-key"><span></span>Spotpris <span class="key-now"></span>Just nu</div></div>
+            <div class="chart-meta"><span>öre/kWh</span><span id="chart-selection" aria-live="polite">Peka på en stapel för att se priset</span></div>
+            <div id="chart" class="chart"></div>
+            <div class="chart-bottom"><span><span class="small-dot"></span> Alla tider i svensk lokal tid</span><span id="updated"></span></div>
+            <details class="price-table"><summary>Visa alla priser som tabell</summary><div class="table-scroll"><table><caption id="table-caption">Dagens spotpriser</caption><thead><tr><th scope="col">Tidsintervall</th><th scope="col">öre/kWh</th></tr></thead><tbody id="price-rows"></tbody></table></div></details>
+          </article>
+
+          <section class="planner" aria-labelledby="planner-title">
+            <div class="planner-icon" aria-hidden="true">ϟ</div>
+            <div class="planner-copy"><p class="eyebrow">FLYTTA LITE. SPARA LITE.</p><h2 id="planner-title">Hitta dagens billigaste timmar</h2><p id="planner-description">En bra tid att ladda bilen eller köra diskmaskinen.</p></div>
+            <div class="planner-result"><label for="duration">Jag behöver el i <select id="duration"><option value="1">1 timme</option><option value="2" selected>2 timmar</option><option value="3">3 timmar</option><option value="4">4 timmar</option></select></label><strong id="best-time">—</strong><span id="best-price"></span></div>
+          </section>
+        </div>
+        <div class="refresh-row"><span id="refresh-note">Priser hämtas från Elpriset just nu.</span><button id="refresh" class="text-button" type="button"><span aria-hidden="true">↻</span> Uppdatera priser</button></div>
+      </section>
+
+      <section id="om-priset" class="explanation"><div class="info-icon" aria-hidden="true">i</div><div><h2>Spotpriset är bara en del av din elräkning.</h2><p>Här ser du elens spotpris, med eller utan 25 % moms. Elhandlarens påslag, energiskatt och elnätsavgifter tillkommer. Ditt avtal avgör om du betalar per kvart, per timme eller ett annat pris.</p><p>Morgondagens priser visas när de har publicerats. Billigaste perioden avser sammanhängande tid inom vald dag, från nästa tillgängliga intervall om du tittar på idag.</p></div></section>
+    </main>
+    <footer><a class="footer-brand" href="./">spotpris.</a><p>Lite mer koll. Lite smartare vardag.</p><p>Prisdata: <a href="https://www.elprisetjustnu.se/elpris-api" target="_blank" rel="noreferrer">Elpriset just nu ↗</a><span>Oberoende tjänst · Inte ansluten till Nord Pool</span></p></footer>
+    <noscript><p class="noscript">Aktivera JavaScript för att visa elpriserna. Du kan också se dem på <a href="https://www.elprisetjustnu.se">Elpriset just nu</a>.</p></noscript>
+  </body>
+</html>
